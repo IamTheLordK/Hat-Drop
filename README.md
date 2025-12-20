@@ -50,7 +50,6 @@ local Root = Char:WaitForChild("HumanoidRootPart")
 local Hats = Char.Humanoid:GetAccessories()
 
 local D = workspace.FallenPartsDestroyHeight
-
 -- save FallenPartsDestroyHeight because we set it to 0/0 ( NaN )
 
 for _, v in pairs(Hats) do if v:GetChildren()[1]:GetJoints()[1].Part1 == Char.Head then sethiddenproperty(v, "BackendAccoutrementState", 2) end end
