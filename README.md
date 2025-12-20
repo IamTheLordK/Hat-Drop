@@ -42,6 +42,8 @@ full credit to [**ShownApe**](https://github.com/ShownApe) for the explanations,
 this wouldn't exist without his help. respect.
 
 ## Explanation
+[`Own testing place`](https://www.roblox.com/pt/games/85054550685240/Desync-Stuff)
+
 ```lua
 local Char = game.Players.LocalPlayer.Character
 local Root = Char:WaitForChild("HumanoidRootPart")
@@ -90,4 +92,4 @@ if not Success then print("failed") else warn("sucess")
    H.CFrame = workspace.T3.CFrame
   end
  end
-end```
+end
