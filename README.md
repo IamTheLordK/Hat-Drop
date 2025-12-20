@@ -19,7 +19,7 @@ Head Hats ( attached to Head ):
 1. apply State 0-3 **BEFORE** ChildRemoved
 
 NoHead Hats ( shoulder, back, waist - attached to Torso / other ):
-1. wait for ChildRemoved trigger / wait(.1) after ChangeState(15)
+1. wait for ChildRemoved trigger / wait(0.1) after ChangeState(15)
 2. apply State 0-3 to **ALL** Hats **AFTER** trigger fires / 0.1s after ChangeState(15)
 
 this timing separation ensures both Head and NonHead Hats drop consistently. applying State 0-3 to NonHead too early causes Roblox to reset them and fail the drop.
@@ -43,26 +43,19 @@ this wouldn't exist without his help. respect.
 
 ## Explanation
 ```lua
-local Players = game:GetService("Players")
-local Char = Players.LocalPlayer.Character
+local Char = game.Players.LocalPlayer.Character
 local Root = Char:WaitForChild("HumanoidRootPart")
 local Hats = Char.Humanoid:GetAccessories()
-local DestroyH = workspace.FallenPartsDestroyHeight
-local G = workspace.Gravity
 
--- save FallenPartsDestroyHeight because we set it to 0/0 (NaN)
--- this lets us position Character at FallenPartsDestroyHeight without losing limbs
--- restored only after Success / Hat collision detected
+local D = workspace.FallenPartsDestroyHeight
 
--- apply State 0 to Head Hats BEFORE ChildRemoved / death
-for _, v in pairs(Hats) do
- if v:GetChildren()[1]:GetJoints()[1].Part1 == Char.Head then
-  sethiddenproperty(v, "BackendAccoutrementState", 0)
- end
-end
+-- save FallenPartsDestroyHeight because we set it to 0/0 ( NaN )
 
+for _, v in pairs(Hats) do if v:GetChildren()[1]:GetJoints()[1].Part1 == Char.Head then sethiddenproperty(v, "BackendAccoutrementState", 2) end end
+
+game.Players.LocalPlayer.SimulationRadius = 999
 workspace.FallenPartsDestroyHeight = 0/0
-workspace.Gravity = 0
+-- this lets us position Character at FallenPartsDestroyHeight without losing limbs / anti void
 
 local A = Instance.new("Animation")
 A.AnimationId = "rbxassetid://" .. (Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and 507767968 or 220512718)
@@ -71,38 +64,30 @@ Track:Play(0, 1, 0)
 Track.TimePosition = Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and .1 or .72
 
 spawn(function()
- Players.LocalPlayer.SimulationRadius = 999
  while Root.Parent do
-  Root.CFrame = CFrame.new(Root.Position.X, Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and DestroyH - .7 or DestroyH - 4, Root.Position.Z)
+  Root.CFrame = CFrame.new(Root.Position.X, Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and D - 0.7 or D - 4, Root.Position.Z)
   Root.Velocity = Vector3.new(0, 26, 0)
   game:GetService("RunService").PostSimulation:Wait()
  end
 end)
 
-wait(.45)
-Char.Humanoid:ChangeState(15)
-Char.ChildRemoved:Wait() -- ~0.1s after ChangeState(15)
+wait(0.45) Char.Humanoid:ChangeState(15) wait(0.1) -- ~0.1s after ChangeState(15) --> ChildRemoved
 
 -- verification is simple: if Hats exist, apply State 0 and move them upward
 -- if Hat has collision, Success = true + break
--- if no collision, wait for Players.LocalPlayer.Character ~= Char (CharacterAdded) and print "failed"
-
-for _, v in pairs(Hats) do sethiddenproperty(v, "BackendAccoutrementState", 0) end
-
-workspace.FallenPartsDestroyHeight = DestroyH
+-- if no collision, wait for Players.LocalPlayer.Character ~= Char ( CharacterAdded ) and print "failed"
 
 local Success = false
-repeat for _, v in pairs(Hats) do local H = v:FindFirstChild("Handle") if H and H.CanCollide then Success = true break end end if Players.LocalPlayer.Character ~= Char then break end wait() until Success
+repeat for _, v in pairs(Hats) do local H = v:FindFirstChild("Handle") sethiddenproperty(v, "BackendAccoutrementState", 2) if H then H.AssemblyLinearVelocity = Vector3.new(0, 30, 0) if H and H.CanCollide then Success = true break end end end if game.Players.LocalPlayer.Character ~= Char then break end task.wait() until Success
 
-workspace.Gravity = G
+workspace.FallenPartsDestroyHeight = D
 
 if not Success then print("failed") else warn("sucess")
  for _, v in pairs(Hats) do
   local H = v:FindFirstChild("Handle") if H then
-   -- T2 is a test BasePart in my game
-   workspace.CurrentCamera.CameraSubject = workspace.T2
-   H.CFrame = workspace.T2.CFrame
+  -- T3 is a test Basepart in my game
+   workspace.CurrentCamera.CameraSubject = workspace.T3
+   H.CFrame = workspace.T3.CFrame
   end
  end
-end
-```
+end```
