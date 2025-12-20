@@ -29,8 +29,8 @@ this timing separation ensures both Head and NonHead Hats drop consistently. app
 NOTHING = 0
 HAS_HANDLE = 1
 IN_WORKSPACE = 2
-IN_CHARACTER = 4
-EQUIPPED = 5
+IN_CHARACTER = 3
+EQUIPPED = 4
 ```
 
 any State != 4 allows drop. States 0-3 all work identically for this exploit.
