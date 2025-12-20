@@ -1,6 +1,6 @@
 **ENSURE YOUR EXECUTOR HAS [`sethiddenproperty`](https://docs.sunc.su/Reflection/sethiddenproperty/)**
 
-simplified version of [ShownApe](https://github.com/ShownApe)'s Hat Drop. why write 300 lines when 100 does the exact same thing? though being simplified doesn't always mean better, obviously.
+simplified version of [ShownApe](https://github.com/ShownApe) Hat Drop. why write 300 lines when 100 does the exact same thing? though being simplified doesn't always mean better, obviously.
 
 ## How It Works
 
