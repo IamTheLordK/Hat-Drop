@@ -2,8 +2,6 @@
 
 simplified version of ShownApe's Hat Drop. why write 300 lines when 100 does the exact same thing? though being simplified doesn't always mean better, obviously.
 
----
-
 ## How It Works
 
 Hat Drop exploits Roblox's accessory physics reevaluation system triggered by `Character.ChildRemoved`. the key is applying `BackendAccoutrementState` (States 0-3) at precise timings before/after the trigger fires.
