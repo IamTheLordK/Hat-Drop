@@ -54,7 +54,6 @@ local D = workspace.FallenPartsDestroyHeight
 
 for _, v in pairs(Hats) do if v:GetChildren()[1]:GetJoints()[1].Part1 == Char.Head then sethiddenproperty(v, "BackendAccoutrementState", 2) end end
 
-game.Players.LocalPlayer.SimulationRadius = 999
 workspace.FallenPartsDestroyHeight = 0/0
 -- this lets us position Character at FallenPartsDestroyHeight without losing limbs / anti void
 
@@ -68,11 +67,14 @@ spawn(function()
  while Root.Parent do
   Root.CFrame = CFrame.new(Root.Position.X, Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and D - 0.7 or D - 4, Root.Position.Z)
   Root.Velocity = Vector3.new(0, 26, 0)
+  game.Players.LocalPlayer.SimulationRadius = 999
   game:GetService("RunService").PostSimulation:Wait()
  end
 end)
 
-wait(0.45) Char.Humanoid:ChangeState(15) wait(0.1) -- ~0.1s after ChangeState(15) --> ChildRemoved
+task.wait(0.45)
+Char.Humanoid:ChangeState(15)
+wait(0.1) -- ~0.1s after ChangeState(15) --> ChildRemoved
 
 -- verification is simple: if Hats exist, apply State 0 and move them upward
 -- if Hat has collision, Success = true + break
