@@ -1,7 +1,7 @@
 local Char = game:GetService("Players").LocalPlayer.Character
-
 local Root = Char.HumanoidRootPart
 local Hats = Char.Humanoid:GetAccessories()
+
 local D = workspace.FallenPartsDestroyHeight
 
 local Old = Instance.new("Part", workspace)
@@ -18,7 +18,7 @@ local A = Instance.new("Animation")
 A.AnimationId = "rbxassetid://" .. (Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and 507767968 or 220512718)
 local Track = Char.Humanoid:LoadAnimation(A)
 Track:Play(0, 1, 0)
-Track.TimePosition = Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and 0.1 or 0.72
+Track.TimePosition = Char.Humanoid.RigType == Enum.HumanoidRigType.R15 and .1 or .72
 
 task.spawn(function()
 while Root.Parent do game:GetService("RunService").PostSimulation:Wait()
@@ -33,7 +33,6 @@ Char.Humanoid:ChangeState(15)
 Char.ChildRemoved:Wait()
 
 local Success = false
-
 repeat
 for _, V in Hats do
  local H = V:FindFirstChild("Handle")
@@ -52,7 +51,7 @@ if not Success then print("failed") else warn("success")
 for _, V in Hats do
  local H = V:FindFirstChild("Handle") if H then
   workspace.CurrentCamera.CameraSubject = Old
-  H.CFrame = Old.CFrame
+   H.CFrame = Old.CFrame
+  end
  end
-end
 end
